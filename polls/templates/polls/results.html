@@ -1,0 +1,36 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Results: {{ question.question_text }} | Django Polls{% endblock %}
+
+{% block content %}
+    <div class="card tilt{% if request.GET.voted %} js-just-voted{% endif %}">
+        <h1>{{ question.question_text }}</h1>
+        <p class="total-votes-line">
+            <span class="js-countup" data-target="{{ total_votes }}">0</span> total vote{{ total_votes|pluralize }}
+        </p>
+
+        <ul class="results-list js-results">
+        {% for choice in question.choice_set.all %}
+            <li class="result-row">
+                <div class="result-label">
+                    <span>{{ choice.choice_text }}</span>
+                    <span class="vote-count">
+                        <span class="js-countup" data-target="{{ choice.votes }}">0</span> vote{{ choice.votes|pluralize }}
+                    </span>
+                </div>
+                <div class="bar-track">
+                    {% if total_votes %}
+                        <div class="bar-fill" data-percent="{% widthratio choice.votes total_votes 100 %}"></div>
+                    {% else %}
+                        <div class="bar-fill" data-percent="0"></div>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <a href="{% url 'polls:detail' question.id %}" class="btn">Vote again</a>
+    </div>
+
+    <a href="{% url 'polls:index' %}" class="back-link">&larr; Back to all polls</a>
+{% endblock %}

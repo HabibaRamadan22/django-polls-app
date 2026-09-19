@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Polls{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <script>
+        // Apply saved theme before paint to avoid a flash of the wrong theme.
+        (function () {
+            var saved = localStorage.getItem("polls-theme");
+            if (saved === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="bg-blobs" aria-hidden="true">
+        <span class="blob blob-a"></span>
+        <span class="blob blob-b"></span>
+    </div>
+
+    <header class="site-header">
+        <a href="{% url 'polls:index' %}" class="site-title">🗳️ Django Polls</a>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+    </header>
+
+    <main class="container fade-in">
+        {% block content %}{% endblock %}
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="{% static 'polls/script.js' %}"></script>
+</body>
+</html>

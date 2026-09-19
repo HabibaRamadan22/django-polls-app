@@ -1,0 +1,34 @@
+{% extends "polls/base.html" %}
+
+{% block title %}All Polls | Django Polls{% endblock %}
+
+{% block content %}
+    <h1>All Polls</h1>
+
+    {% if latest_question_list %}
+        <input
+            type="text"
+            id="poll-search"
+            class="search-box"
+            placeholder="Search polls..."
+            autocomplete="off"
+        >
+
+        <ul class="question-list js-question-list">
+        {% for question in latest_question_list %}
+            <li class="question-item">
+                <a href="{% url 'polls:detail' question.id %}" class="tilt">
+                    <span class="question-text">{{ question.question_text }}</span>
+                    <span class="vote-badge">
+                        <span class="js-countup" data-target="{{ question.total_votes|default:0 }}">0</span> vote{{ question.total_votes|default:0|pluralize }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+
+        <p class="empty-state js-no-results" hidden>No polls match your search.</p>
+    {% else %}
+        <p class="empty-state">No polls are available yet.</p>
+    {% endif %}
+{% endblock %}
